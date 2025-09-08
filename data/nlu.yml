@@ -1,0 +1,69 @@
+# data/nlu.yml
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - good morning
+    - good evening
+    - hey there
+
+- intent: ask_hours
+  examples: |
+    - What are your hours?
+    - When are you open?
+    - What are your business hours?
+    - When do you close?
+    - Timings please
+
+- intent: ask_time
+  examples: |
+    - What time is it?
+    - Tell me the current time
+    - What's the time?
+    - can you tell me the time
+
+- intent: ask_location
+  examples: |
+    - Where are you located?
+    - What is your address?
+    - Where is your office?
+    - How can I find you?
+    - your location
+
+- intent: request_human_handoff
+  examples: |
+    - I want to talk to a human
+    - Can I speak to an agent?
+    - Talk to a person
+    - connect me with a representative
+    - human please
+
+- intent: goodbye
+  examples: |
+    - bye
+    - goodbye
+    - see you later
+    - thanks bye
+
+- intent: affirm
+  examples: |
+    - yes
+    - indeed
+    - of course
+    - correct
+
+- intent: deny
+  examples: |
+    - no
+    - never
+    - not really
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - who are you?

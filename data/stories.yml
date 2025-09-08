@@ -1,0 +1,21 @@
+version: "3.1"
+
+stories:
+
+- story: user asks for hours and says goodbye
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_hours
+  - action: utter_hours
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: user asks for time and says goodbye
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_time
+  - action: action_tell_time
+  - intent: goodbye
+  - action: utter_goodbye

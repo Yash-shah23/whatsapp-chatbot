@@ -1,0 +1,45 @@
+# domain.yml
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - bot_challenge
+  - ask_hours
+  - ask_time
+  - ask_location
+  - request_human_handoff
+
+responses:
+  utter_greet:
+  - text: "Hello! How can I help you today?"
+  - text: "Hi there! What can I do for you?"
+
+  utter_hours:
+  - text: "We are open from 9 AM to 6 PM, Monday through Saturday."
+
+  utter_location:
+  - text: "You can find us at 123 Tech Park, Ahmedabad, Gujarat."
+
+  utter_goodbye:
+  - text: "Goodbye!"
+  - text: "Have a great day! Bye."
+
+  utter_iamabot:
+  - text: "I am an AI assistant, powered by Rasa."
+
+  utter_ask_rephrase:
+  - text: "I'm sorry, I'm not sure how to help with that. Could you try rephrasing?"
+  - text: "My apologies, I didn't quite understand. Can you say that another way?"
+
+  utter_human_handoff:
+  - text: "No problem. I'm connecting you with a human agent now. Please wait a moment."
+
+actions:
+ - action_tell_time
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

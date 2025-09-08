@@ -1,0 +1,23 @@
+# data/rules.yml
+version: "3.1"
+
+rules:
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: Greet the user
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- rule: Handle request for human handoff
+  steps:
+  - intent: request_human_handoff
+  - action: utter_human_handoff
+
+- rule: Ask for rephrase if NLU confidence is low
+  steps:
+  - intent: nlu_fallback
+  - action: utter_ask_rephrase
