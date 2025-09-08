@@ -9,6 +9,7 @@ nlu:
     - good morning
     - good evening
     - hey there
+    - buddy
 
 - intent: ask_hours
   examples: |
@@ -28,12 +29,14 @@ nlu:
     - What's the time?
     - can you tell me the time
 
+
 - intent: ask_location
   examples: |
     - Where are you located?
     - What is your address?
     - Where is your office?
     - How can I find you?
+
 
 - intent: request_human_handoff
   examples: |
@@ -42,6 +45,7 @@ nlu:
     - Talk to a person
     - human please
 
+
 - intent: goodbye
   examples: |
     - bye
@@ -49,12 +53,14 @@ nlu:
     - see you later
     - thanks bye
 
+
 - intent: affirm
   examples: |
     - yes
     - indeed
     - of course
     - correct
+
 
 - intent: deny
   examples: |
@@ -67,3 +73,21 @@ nlu:
     - are you a bot?
     - are you a human?
     - who are you?
+  
+- intent: schedule_appointment
+  examples: |
+    - I want to schedule an appointment
+    - Can I book a meeting?
+    - I need to make an appointment
+    - schedule an appointment
+    - book a time
+
+# In data/nlu.yml
+- intent: inform
+  examples: |
+    - I want to book it for [tomorrow](date)
+    - how about [next Tuesday](date)
+    - [today](date) at [3pm](time)
+    - let's do [5 PM](time)
+    - make it [saturday](date)
+    - the time is [14:00](time)

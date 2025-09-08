@@ -1,3 +1,4 @@
+# domain.yml (Final Corrected Version)
 version: "3.1"
 
 intents:
@@ -10,32 +11,63 @@ intents:
   - ask_time
   - ask_location
   - request_human_handoff
+  - inform
 
 entities:
   - day
+  - date
+  - time
+
+slots:
+  appointment_date:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: date
+  appointment_time:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: time
 
 responses:
   utter_greet:
-  - text: "Hello! How can I help you today?"
-  - text: "Hi there! What can I do for you?"
+  - text: "Hello! How can I help you today? I can share our hours, location, or schedule an appointment."
 
   utter_goodbye:
   - text: "Goodbye!"
-  - text: "Have a great day! Bye."
 
   utter_iamabot:
   - text: "I am an AI assistant, powered by Rasa."
-  
-  utter_human_handoff:
-  - text: "No problem. I'm connecting you with a human agent now. Please wait a moment."
 
-  utter_location:
+  utter_human_handoff:
+  - text: "No problem. I'm connecting you with a human agent now."
+  
+  utter_location: # <--- THIS WAS MISSING. IT IS NOW FIXED.
   - text: "You can find us at 123 Tech Park, Ahmedabad, Gujarat. Here is a direct link on Google Maps: https://maps.google.com/?q=123+Tech+Park+Ahmedabad"
+
+  utter_ask_appointment_date:
+  - text: "Great! What date would you like to schedule your appointment for? (e.g., 'today', 'tomorrow', 'next Friday')"
+
+  utter_ask_appointment_time:
+  - text: "Perfect. And for what time? (e.g., '2 PM', '15:00')"
+
+  utter_appointment_booked:
+  - text: "Thank you! Your appointment is confirmed for {appointment_date} at {appointment_time}. We will send you a reminder the day before."
 
 actions:
  - action_tell_time
  - action_check_hours
  - action_advanced_fallback
+ - validate_appointment_form
+
+forms:
+  appointment_form:
+    required_slots:
+      - appointment_date
+      - appointment_time
 
 session_config:
   session_expiration_time: 60

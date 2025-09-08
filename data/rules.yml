@@ -20,3 +20,27 @@ rules:
   steps:
   - intent: nlu_fallback
   - action: action_advanced_fallback
+
+- rule: Activate appointment form
+  condition:
+  - active_loop: null
+  steps:
+  - intent: schedule_appointment
+  - action: appointment_form
+  - active_loop: appointment_form
+
+- rule: Submit the form
+  condition:
+  # The form is active
+  - active_loop: appointment_form
+  steps:
+  # The form is submitted
+  - action: appointment_form
+  - active_loop: null
+  # The bot confirms the details
+  - action: utter_appointment_booked
+
+- rule: Handle fallback with advanced logic
+  steps:
+  - intent: nlu_fallback
+  - action: action_advanced_fallback
