@@ -1,14 +1,10 @@
-# main.py (Final UX Fix)
-
+# main.py
 import os
 import requests
 import uvicorn
 from fastapi import FastAPI, Request, Response
 from dotenv import load_dotenv
 
-# -----------------------------------------------------------------------------
-# --- CONFIGURATION ---
-# -----------------------------------------------------------------------------
 load_dotenv()
 
 ACCESS_TOKEN = os.environ.get("WHATSAPP_ACCESS_TOKEN")
@@ -16,14 +12,9 @@ VERIFY_TOKEN = os.environ.get("WHATSAPP_VERIFY_TOKEN")
 PHONE_NUMBER_ID = os.environ.get("WHATSAPP_PHONE_NUMBER_ID")
 RASA_API_URL = "http://localhost:5005/webhooks/rest/webhook"
 
-# --- FastAPI App Initialization ---
 app = FastAPI()
 
-# -----------------------------------------------------------------------------
-# --- WHATSAPP HELPER FUNCTIONS ---
-# -----------------------------------------------------------------------------
 def mark_message_as_read(message_id: str):
-    """Sends a request to Meta to mark a message as read (blue ticks)."""
     url = f"https://graph.facebook.com/v18.0/{PHONE_NUMBER_ID}/messages"
     headers = {"Authorization": f"Bearer {ACCESS_TOKEN}", "Content-Type": "application/json"}
     data = {"messaging_product": "whatsapp", "status": "read", "message_id": message_id}
@@ -33,18 +24,15 @@ def mark_message_as_read(message_id: str):
         print(f"Error marking message as read: {e}")
 
 def show_typing_indicator(to_number: str):
-    """Sends a request to Meta to show the 'typing...' animation."""
     url = f"https://graph.facebook.com/v18.0/{PHONE_NUMBER_ID}/messages"
     headers = {"Authorization": f"Bearer {ACCESS_TOKEN}", "Content-Type": "application/json"}
-    # --- PAYLOAD CORRECTED HERE ---
-    data = {"messaging_product": "whatsapp", "to": to_number, "typing_on": True}
+    data = {"messaging_product": "whatsapp", "to": to_number, "type": "typing"}
     try:
         requests.post(url, headers=headers, json=data)
     except Exception as e:
         print(f"Error sending typing indicator: {e}")
 
 def send_whatsapp_message(to_number: str, message: str):
-    """Sends a text message back to the user via the Graph API."""
     if not message: return
     url = f"https://graph.facebook.com/v18.0/{PHONE_NUMBER_ID}/messages"
     headers = {"Authorization": f"Bearer {ACCESS_TOKEN}", "Content-Type": "application/json"}
@@ -60,11 +48,7 @@ def send_whatsapp_message(to_number: str, message: str):
     except requests.exceptions.RequestException as e:
         print(f"Error sending message: {e}")
 
-# -----------------------------------------------------------------------------
-# --- RASA HELPER FUNCTION ---
-# -----------------------------------------------------------------------------
 def get_rasa_response(sender_id: str, message: str):
-    """Sends a message to the Rasa server and gets the bot's response."""
     payload = {"sender": sender_id, "message": message}
     try:
         response = requests.post(RASA_API_URL, json=payload)
@@ -74,12 +58,8 @@ def get_rasa_response(sender_id: str, message: str):
         print(f"Error calling Rasa: {e}")
         return [{"text": "Sorry, my main brain is taking a break right now. Please try again later."}]
 
-# -----------------------------------------------------------------------------
-# --- WEBHOOK ENDPOINTS ---
-# -----------------------------------------------------------------------------
 @app.get("/webhook")
 async def verify_webhook(request: Request):
-    """Handles the webhook verification request from Meta."""
     mode = request.query_params.get("hub.mode")
     token = request.query_params.get("hub.verify_token")
     challenge = request.query_params.get("hub.challenge")
@@ -91,7 +71,6 @@ async def verify_webhook(request: Request):
 
 @app.post("/webhook")
 async def receive_message(request: Request):
-    """Handles all incoming messages from WhatsApp."""
     body = await request.json()
     print("Received message body:", body)
 
@@ -106,8 +85,10 @@ async def receive_message(request: Request):
             msg_body = message_info.get("text", {}).get("body")
             message_id = message_info.get("id")
 
-            if message_id: mark_message_as_read(message_id)
             show_typing_indicator(from_number)
+            
+
+            if message_id: mark_message_as_read(message_id)
             
             if msg_body:
                 rasa_response = get_rasa_response(from_number, msg_body)
@@ -120,6 +101,5 @@ async def receive_message(request: Request):
 
     return Response(status_code=200)
 
-# --- To run the app from the command line ---
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

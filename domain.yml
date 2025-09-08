@@ -1,4 +1,3 @@
-# domain.yml
 version: "3.1"
 
 intents:
@@ -30,13 +29,8 @@ responses:
   utter_human_handoff:
   - text: "No problem. I'm connecting you with a human agent now. Please wait a moment."
 
-  # --- THIS SECTION WAS LIKELY MISSING ---
-  utter_hours:
-  - text: "We are open from 9 AM to 6 PM, Monday through Saturday."
-
   utter_location:
-  - text: "You can find us at 123 Tech Park, Ahmedabad, Gujarat."
-  # ------------------------------------------
+  - text: "You can find us at 123 Tech Park, Ahmedabad, Gujarat. Here is a direct link on Google Maps: https://maps.google.com/?q=123+Tech+Park+Ahmedabad"
 
 actions:
  - action_tell_time
